@@ -28,8 +28,7 @@ test('it works', function(assert) {
 });
 
 test('it pushes the correct functions into the command queue', function(/* assert */) {
-  var queue = [];
-  this.stub(googletag.cmd, 'push', f => queue.push(f));
+  this.stub(googletag.cmd, 'push', f => f());
   
   let singleRequestStub = this.mock().once();
   singleRequestStub.method = 'enableSingleRequest';
@@ -47,7 +46,6 @@ test('it pushes the correct functions into the command queue', function(/* asser
   initialize(this.appInstance);
   
   // run the first item in the command queue
-  queue[0]();
   singleRequestStub.verify();
   collapseStub.verify();
   enableServicesMock.verify();
