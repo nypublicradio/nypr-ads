@@ -26,7 +26,6 @@ export default Component.extend({
   slotClassNames: wnycEmbeddedAttr(),
 
   refresh() {
-    console.log('running refresh');
     let ad = this.get('ad');
     googletag.cmd.push(() => googletag.pubads().refresh([ad]));
   },
