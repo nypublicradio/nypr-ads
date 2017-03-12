@@ -3,26 +3,17 @@ import { isEmpty } from 'ember-utils';
 import googletag from 'googletag';
 
 export default Service.extend({
-  doTargeting(story) {
+  doTargeting(targets) {
     googletag.cmd.push(function() {
       googletag.pubads().setTargeting('url', window.location.pathname);
       googletag.pubads().setTargeting('host', window.location.host);
       googletag.pubads().setTargeting('fullurl', window.location);
     
-      if (story){
-        let {
-          tags,
-          show,
-          channel,
-          series
-        } = story.get('extendedStory');
-        
-        [['tag', tags], ['show', show], ['channel', channel], ['series', series]].forEach(([k, v]) => {
-          if (!isEmpty(v)) {
-            googletag.pubads().setTargeting(k, v);
-          }
-        });
-      }
+      Object.keys(targets).forEach(key => {
+        if (!isEmpty(targets[key])) {
+          googletag.pubads().setTargeting(key, targets[key]);
+        }
+      });
     });  
   }
 });
