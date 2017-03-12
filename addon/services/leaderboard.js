@@ -7,6 +7,10 @@ export default Service.extend({
     window.addEventListener('message', this._resizeLeaderboard);
     googletag.cmd.push(() => googletag.pubads().addEventListener('slotRenderEnded', this.adSpaceCleanup));
   },
+  willDestroy() {
+    this._super(...arguments);
+    window.removeEventListener('message', this._resizeLeaderboard);
+  },
   adSpaceCleanup(e) {
     if (/leaderboard/.test(e.slot.getAdUnitPath())) {
       if (e.isEmpty) {
