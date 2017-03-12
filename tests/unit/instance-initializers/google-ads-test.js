@@ -1,10 +1,14 @@
 import Ember from 'ember';
 import { initialize } from 'dummy/instance-initializers/google-ads';
-import { module, test } from 'qunit';
+import { module } from 'qunit';
+import test from 'ember-sinon-qunit/test-support/test';
 import destroyApp from '../../helpers/destroy-app';
+import googletag from 'googletag';
 
 module('Unit | Instance Initializer | google ads', {
   beforeEach() {
+    googletag.pubads = googletag.pubads || (() => {});
+    googletag.enableServices = googletag.enableServices || (() => {});
     Ember.run(() => {
       this.application = Ember.Application.create();
       this.appInstance = this.application.buildInstance();
@@ -16,10 +20,35 @@ module('Unit | Instance Initializer | google ads', {
   }
 });
 
-// Replace this with your real tests.
 test('it works', function(assert) {
   initialize(this.appInstance);
 
   // you would normally confirm the results of the initializer here
   assert.ok(true);
+});
+
+test('it pushes the correct functions into the command queue', function(/* assert */) {
+  var queue = [];
+  this.stub(googletag.cmd, 'push', f => queue.push(f));
+  
+  let singleRequestStub = this.mock().once();
+  singleRequestStub.method = 'enableSingleRequest';
+  let collapseStub = this.mock().once();
+  collapseStub.method = 'collapseEmptyDivs';
+  let enableServicesMock = this.mock().once();
+  enableServicesMock.method = 'enableServices';
+
+  this.stub(googletag, 'pubads', () => ({
+    enableSingleRequest: singleRequestStub,
+    collapseEmptyDivs: collapseStub
+  }));
+  this.stub(googletag, 'enableServices', () => enableServicesMock());
+  
+  initialize(this.appInstance);
+  
+  // run the first item in the command queue
+  queue[0]();
+  singleRequestStub.verify();
+  collapseStub.verify();
+  enableServicesMock.verify();
 });
