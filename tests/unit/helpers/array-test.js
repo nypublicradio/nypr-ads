@@ -8,5 +8,5 @@ module('Unit | Helper | array');
 test('it works', function(assert) {
   let result = array([42, 54]);
   assert.ok(result);
-  assert.equal(results, [42, 54], 'returns params in an array')
+  assert.deepEqual(result, [42, 54], 'returns params in an array');
 });

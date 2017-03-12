@@ -31,7 +31,7 @@ test('it initializes a basic display ad', function(assert) {
   assert.ok(defineMock.firstCall.calledWith('foo slot', [100, 200, 300], 'foo target'));
 });
 
-test('it initializes an ad with a size mapping', function(assert) {
+test('it initializes an ad with a size mapping', function(/*assert*/) {
   this.stub(googletag.cmd, 'push', f => f());
   
   this.mock(googletag).expects('display').once();
@@ -55,11 +55,10 @@ test('it initializes an ad with a size mapping', function(assert) {
     .returns({
       addListener: this.mock().twice(),
       removeListener() {}
-    })
+    });
   
   this.render(hbs`{{dfp-ad target='foo target' sizes=(array 100 200 300) slot='foo slot' mapping=(array
     (array 100 (array 200 300))
     (array 300 (array 400 500))
   )}}`);
-  
 });
