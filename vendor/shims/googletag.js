@@ -2,7 +2,7 @@
   function vendorModule() {
     'use strict';
     
-    const googletag = self['googletag'] || {};
+    var googletag = self['googletag'] = self['googletag'] || {};
     googletag.cmd = googletag.cmd || [];
 
     return { 'default': self['googletag'] };
