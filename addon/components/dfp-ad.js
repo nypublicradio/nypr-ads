@@ -35,10 +35,10 @@ export default Component.extend({
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(this.get('slot'), this.get('sizes'), this.get('target'));
       if (ad) {
+        this.set('ad', ad);
         ad.addService(googletag.pubads());
   
         if (this.get('mapping')) {
-          this.set('ad', ad);
           this.set('mql', []);
           let sizeMapping = googletag.sizeMapping();
           this.get('mapping').forEach(([width, unit]) => {
@@ -64,5 +64,6 @@ export default Component.extend({
     if (mql && mql.length) {
       mql.forEach(m => m.removeListener(bind(this, 'refresh')));
     }
+    googletag.destroySlots([this.get('ad')]);
   }
 });
