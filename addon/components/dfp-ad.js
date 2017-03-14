@@ -31,6 +31,7 @@ export default Component.extend({
   },
 
   didInsertElement() {
+    this._super(...arguments);
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(this.get('slot'), this.get('sizes'), this.get('target'));
       if (ad) {
@@ -58,6 +59,7 @@ export default Component.extend({
   },
   
   willDestroyElement() {
+    this._super(...arguments);
     let mql = this.get('mql');
     if (mql && mql.length) {
       mql.forEach(m => m.removeListener(bind(this, 'refresh')));
