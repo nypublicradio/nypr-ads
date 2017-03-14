@@ -32,38 +32,41 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
+    let {
+      slot,
+      sizes,
+      target,
+      mapping
+    } = this.getProperties('slot', 'sizes', 'target', 'mapping');
     googletag.cmd.push(() => {
-      let ad = googletag.defineSlot(this.get('slot'), this.get('sizes'), this.get('target'));
-      if (ad) {
-        this.set('ad', ad);
-        ad.addService(googletag.pubads());
-  
-        if (this.get('mapping')) {
-          this.set('mql', []);
-          let sizeMapping = googletag.sizeMapping();
-          this.get('mapping').forEach(([width, unit]) => {
-            sizeMapping.addSize([width, 0], unit);
-            let mql = window.matchMedia(`(min-width: ${width}px)`);
-            mql.addListener(bind(this, 'refresh'));
-            this.get('mql').push(mql);
-          });
-          sizeMapping.build();
-          ad.defineSizeMapping(sizeMapping);
-        }
-        googletag.display(this.get('target'));
-      } else {
-        googletag.pubads().refresh();
-      }
+      let ad = googletag.defineSlot(slot, sizes, target);
 
+      ad.addService(googletag.pubads());
+      this.set('ad', ad);
+
+      if (mapping) {
+        let mqList = [];
+        let sizeMapping = googletag.sizeMapping();
+        mapping.forEach(([width, unit]) => {
+          sizeMapping.addSize([width, 0], unit);
+          let mq = window.matchMedia(`(min-width: ${width}px)`);
+          mq.addListener(bind(this, 'refresh'));
+          mqList.push(mq);
+        });
+        sizeMapping.build();
+        ad.defineSizeMapping(sizeMapping);
+        this.set('mqList', mqList);
+      }
+      googletag.display(target);
     });
   },
   
   willDestroyElement() {
     this._super(...arguments);
-    let mql = this.get('mql');
-    if (mql && mql.length) {
-      mql.forEach(m => m.removeListener(bind(this, 'refresh')));
+    let { mqList, ad } = this.getProperties('mqList', 'ad');
+    if (mqList && mqList.length) {
+      mqList.forEach(mq => mq.removeListener(bind(this, 'refresh')));
     }
-    googletag.destroySlots([this.get('ad')]);
+    googletag.destroySlots([ad]);
   }
 });
