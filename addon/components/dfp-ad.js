@@ -67,6 +67,6 @@ export default Component.extend({
     if (mqList && mqList.length) {
       mqList.forEach(mq => mq.removeListener(bind(this, 'refresh')));
     }
-    googletag.cms.push(() => googletag.destroySlots([ad]));
+    googletag.cmd.push(() => googletag.destroySlots([ad]));
   }
 });
