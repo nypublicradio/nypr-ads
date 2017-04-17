@@ -1,7 +1,7 @@
 import Component from 'ember-component';
 import computed from 'ember-computed';
 import get from 'ember-metal/get';
-import { bind } from 'ember-runloop';
+import { bind, schedule } from 'ember-runloop';
 import googletag from 'googletag';
 import layout from '../templates/components/dfp-ad';
 
@@ -40,8 +40,6 @@ export default Component.extend({
     } = this.getProperties('slot', 'sizes', 'target', 'mapping');
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(slot, sizes, target);
-
-      ad.addService(googletag.pubads());
       this.set('ad', ad);
 
       if (mapping) {
@@ -57,7 +55,8 @@ export default Component.extend({
         ad.defineSizeMapping(sizeMapping);
         this.set('mqList', mqList);
       }
-      googletag.display(target);
+      ad.addService(googletag.pubads());
+      schedule('afterRender', () => googletag.display(target));
     });
   },
   
