@@ -14,8 +14,8 @@ module.exports = {
     app.import('vendor/shims/googletag.js');
   },
   
-  contentFor: function(type/*, config */) {
-    if (type === 'head') {
+  contentFor: function(type, config) {
+    if (type === 'head' && config.environment !== 'test') {
       var scriptArray = [
         '<script>',
         'var gads = document.createElement("script");',
