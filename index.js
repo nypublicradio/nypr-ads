@@ -16,16 +16,7 @@ module.exports = {
   
   contentFor: function(type, config) {
     if (type === 'head' && config.environment !== 'test') {
-      var scriptArray = [
-        '<script>',
-        'var gads = document.createElement("script");',
-        'gads.async = true; gads.type = "text/javascript";',
-        'gads.src = "https://www.googletagservices.com/tag/js/gpt.js";',
-        'var node = document.getElementsByTagName("script")[0];',
-        'node.parentNode.insertBefore(gads, node);',
-        '</script>'
-      ];
-      return scriptArray.join("\n");
+      return '<script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>';
     } else {
       return '';
     }
