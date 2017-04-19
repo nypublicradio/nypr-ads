@@ -40,6 +40,9 @@ export default Component.extend({
     } = this.getProperties('slot', 'sizes', 'target', 'mapping');
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(slot, sizes, target);
+      if (!ad) {
+        return;
+      }
       this.set('ad', ad);
 
       if (mapping) {
