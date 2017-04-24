@@ -19,8 +19,8 @@ test('it calls setTargeting on passed in hash', function(assert) {
   let testTargets = {tags: ['foo', 'bar'], show: 'baz'};
   let targetingMock = this.mock().exactly(5);
 
-  this.stub(googletag.cmd, 'push', f => f());
-  this.stub(googletag, 'pubads', () => ({
+  this.stub(googletag.cmd, 'push').callsFake(f => f());
+  this.stub(googletag, 'pubads').callsFake(() => ({
     setTargeting: targetingMock
   }));
   

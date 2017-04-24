@@ -18,8 +18,8 @@ test('it exists', function(assert) {
 
 test('it sets up a media query listener on install', function(assert) {
   let googleListener = this.mock().once();
-  this.stub(googletag.cmd, 'push', f => f());
-  this.stub(googletag, 'pubads', () => ({
+  this.stub(googletag.cmd, 'push').callsFake(f => f());
+  this.stub(googletag, 'pubads').callsFake(() => ({
     addEventListener: googleListener
   }));
   let windowMock = this.mock(window).expects('addEventListener').once();

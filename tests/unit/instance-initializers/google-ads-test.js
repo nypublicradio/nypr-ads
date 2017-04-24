@@ -37,11 +37,11 @@ test('it pushes the correct functions into the command queue', function(/* asser
   let enableServicesMock = this.mock().once();
   enableServicesMock.method = 'enableServices';
 
-  this.stub(googletag, 'pubads', () => ({
+  this.stub(googletag, 'pubads').callsFake(() => ({
     enableSingleRequest: singleRequestStub,
     collapseEmptyDivs: collapseStub
   }));
-  this.stub(googletag, 'enableServices', () => enableServicesMock());
+  this.stub(googletag, 'enableServices').callsFake(() => enableServicesMock());
   
   initialize(this.appInstance);
   

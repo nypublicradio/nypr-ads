@@ -17,7 +17,7 @@ test('it renders', function(assert) {
 });
 
 test('it initializes a basic display ad', function(assert) {
-  this.stub(googletag.cmd, 'push', f => f());
+  this.stub(googletag.cmd, 'push').callsFake( f => f());
   
   let defineMock = this.mock(googletag)
     .expects('defineSlot')
@@ -32,7 +32,7 @@ test('it initializes a basic display ad', function(assert) {
 });
 
 test('it initializes an ad with a size mapping', function(/*assert*/) {
-  this.stub(googletag.cmd, 'push', f => f());
+  this.stub(googletag.cmd, 'push').callsFake(f => f());
   
   this.mock(googletag).expects('display').once();
   this.stub(googletag, 'defineSlot')
