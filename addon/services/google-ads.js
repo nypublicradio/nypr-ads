@@ -9,11 +9,13 @@ export default Service.extend({
       googletag.pubads().setTargeting('host', window.location.host);
       googletag.pubads().setTargeting('fullurl', window.location);
     
-      Object.keys(targets).forEach(key => {
-        if (!isEmpty(targets[key])) {
-          googletag.pubads().setTargeting(key, targets[key]);
-        }
-      });
+      if (targets) {
+        Object.keys(targets).forEach(key => {
+          if (!isEmpty(targets[key])) {
+            googletag.pubads().setTargeting(key, targets[key]);
+          }
+        });
+      }
     });  
   }
 });
