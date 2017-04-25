@@ -28,7 +28,7 @@ test('it works', function(assert) {
 });
 
 test('it pushes the correct functions into the command queue', function(/* assert */) {
-  this.stub(googletag.cmd, 'push', f => f());
+  this.stub(googletag.cmd, 'push').callsFake(f => f());
   
   let singleRequestStub = this.mock().once();
   singleRequestStub.method = 'enableSingleRequest';

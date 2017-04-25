@@ -33,3 +33,20 @@ test('it calls setTargeting on passed in hash', function(assert) {
   assert.ok(targetingMock.getCall(3).calledWith('tags', ['foo', 'bar']));
   assert.ok(targetingMock.getCall(4).calledWith('show', 'baz'));
 });
+
+test('can safely call targeting without an argument', function(assert) {
+  googletag.pubads = googletag.pubads || (() => {});
+  let targetingMock = this.mock().exactly(3);
+
+  this.stub(googletag.cmd, 'push').callsFake(f => f());
+  this.stub(googletag, 'pubads').callsFake(() => ({
+    setTargeting: targetingMock
+  }));
+  
+  let service = this.subject();
+  service.doTargeting();
+  targetingMock.verify();
+  assert.ok(targetingMock.getCall(0).calledWith('url', window.location.pathname));
+  assert.ok(targetingMock.getCall(1).calledWith('host', window.location.host));
+  assert.ok(targetingMock.getCall(2).calledWith('fullurl', window.location));
+});
