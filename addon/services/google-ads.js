@@ -7,7 +7,7 @@ export default Service.extend({
     googletag.cmd.push(function() {
       googletag.pubads().setTargeting('url', window.location.pathname);
       googletag.pubads().setTargeting('host', window.location.host);
-      googletag.pubads().setTargeting('fullurl', window.location);
+      googletag.pubads().setTargeting('fullurl', window.location.href);
     
       if (targets) {
         Object.keys(targets).forEach(key => {
