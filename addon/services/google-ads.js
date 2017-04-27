@@ -17,5 +17,10 @@ export default Service.extend({
         });
       }
     });  
+  },
+  clearTarget(target) {
+    googletag.cmd.push(function() {
+      googletag.pubads().clearTargeting(target);
+    });
   }
 });
