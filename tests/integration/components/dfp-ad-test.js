@@ -38,14 +38,14 @@ test('it initializes an ad with a size mapping', function(/*assert*/) {
   this.stub(googletag, 'defineSlot')
     .returns({
       addService: this.stub,
-      defineSizeMapping: this.mock().once()
+      defineSizeMapping: this.mock().once().withArgs('built mapping')
     });
   
   this.mock(googletag)
     .expects('sizeMapping')
     .once()
     .returns({
-      build: this.mock().once(),
+      build: this.mock().once().returns('built mapping'),
       addSize: this.mock().twice()
     });
 

@@ -54,8 +54,7 @@ export default Component.extend({
           mq.addListener(bind(this, 'refresh'));
           mqList.push(mq);
         });
-        sizeMapping.build();
-        ad.defineSizeMapping(sizeMapping);
+        ad.defineSizeMapping(sizeMapping.build());
         this.set('mqList', mqList);
       }
       ad.addService(googletag.pubads());
