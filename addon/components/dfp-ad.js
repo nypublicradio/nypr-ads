@@ -1,7 +1,6 @@
-import Component from 'ember-component';
-import computed from 'ember-computed';
-import get from 'ember-metal/get';
-import { bind, schedule } from 'ember-runloop';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { bind, schedule } from '@ember/runloop';
 import googletag from 'googletag';
 import layout from '../templates/components/dfp-ad';
 
@@ -61,7 +60,7 @@ export default Component.extend({
       schedule('afterRender', () => googletag.display(target));
     });
   },
-  
+
   willDestroyElement() {
     this._super(...arguments);
     let { mqList, ad } = this.getProperties('mqList', 'ad');

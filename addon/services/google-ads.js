@@ -1,5 +1,5 @@
-import Service from 'ember-service';
-import { isEmpty } from 'ember-utils';
+import Service from '@ember/service';
+import { isEmpty } from '@ember/utils';
 import googletag from 'googletag';
 
 export default Service.extend({
@@ -8,7 +8,7 @@ export default Service.extend({
       googletag.pubads().setTargeting('url', window.location.pathname);
       googletag.pubads().setTargeting('host', window.location.host);
       googletag.pubads().setTargeting('fullurl', window.location.host + window.location.pathname);
-    
+
       if (targets) {
         Object.keys(targets).forEach(key => {
           if (!isEmpty(targets[key])) {
@@ -16,7 +16,7 @@ export default Service.extend({
           }
         });
       }
-    });  
+    });
   },
   clearTarget(target) {
     googletag.cmd.push(function() {

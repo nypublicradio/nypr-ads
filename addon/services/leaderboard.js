@@ -1,5 +1,5 @@
-import Service from 'ember-service';
-import Ember from 'ember';
+import $ from 'jquery';
+import Service from '@ember/service';
 import googletag from 'googletag';
 
 export default Service.extend({
@@ -14,16 +14,16 @@ export default Service.extend({
   adSpaceCleanup(e) {
     if (/leaderboard/.test(e.slot.getAdUnitPath())) {
       if (e.isEmpty) {
-        Ember.$('#leaderboard').addClass('is-collapsed');
+        $('#leaderboard').addClass('is-collapsed');
       } else {
-        Ember.$('#leaderboard').removeClass('is-collapsed');
+        $('#leaderboard').removeClass('is-collapsed');
       }
     }
   },
   _resizeLeaderboard(e) {
     let data;
     let shouldOpen;
-    let $leaderboard = Ember.$('#leaderboard > div > iframe, #leaderboard > div');
+    let $leaderboard = $('#leaderboard > div > iframe, #leaderboard > div');
 
     // lots of things on a page can send a postMessage, but not all of that
     // data is parsable as JSON. this prevents nasty console messages.
@@ -39,14 +39,14 @@ export default Service.extend({
     }
 
     if ( data.msg === 'init' ) {
-      Ember.$('#leaderboard').css('max-height', 'none');
+      $('#leaderboard').css('max-height', 'none');
       shouldOpen = false;
     } else {
       shouldOpen = data.msg === 'open';
     }
 
     if ( $leaderboard.length !== 1 ) {
-      $leaderboard = Ember.$('#leaderboard > div > iframe, #leaderboard > div');
+      $leaderboard = $('#leaderboard > div > iframe, #leaderboard > div');
     }
     $leaderboard.css('max-height', shouldOpen ? 415 : 90);
   }

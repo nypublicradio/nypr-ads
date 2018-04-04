@@ -1,10 +1,10 @@
-import Ember from 'ember';
-import computed from 'ember-computed';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 import layout from '../templates/components/expandable-responsive-leaderboard';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
-  
+
   network: '6483581',
   unitSuffix: 'leaderboard',
   slot: computed('network', 'site', function() {
