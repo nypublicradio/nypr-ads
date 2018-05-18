@@ -23,3 +23,37 @@ Things you might want to know when using this addon:
 
 * The sizes above say:
   * there is a `970 x 415` slot, a `728 x 90` slot, and a `300 x 50` slot
+
+## Development
+
+Development requires nodejs 6+.
+```sh
+brew install nvm
+nvm install --lts
+nvm use --lts
+```
+
+Install dependencies.
+```sh
+npm install
+```
+
+Build and run ember.
+_Note: To use your system's global ember simply type `ember`_
+```sh
+./node_modules/.bin/ember build
+./node_modules/.bin/ember serve
+```
+
+## Tests
+
+Tests require `google-chrome` and `chromedriver`.
+```sh
+brew cask install google-chrome
+brew cask install chromedriver
+```
+
+Execute tests.
+```sh
+./node_modules/.bin/ember test
+```
