@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
-import { bind, schedule } from '@ember/runloop';
+import { bind, schedule, run } from '@ember/runloop';
 import googletag from 'googletag';
 import layout from '../templates/components/dfp-ad';
 
@@ -23,6 +23,8 @@ export default Component.extend({
   sizes:          wnycEmbeddedAttr(),
   mapping:        wnycEmbeddedAttr(),
   slotClassNames: wnycEmbeddedAttr(),
+  slotRenderEndedAction: () => {},
+  clearOnEmptyRefresh: false,
 
   refresh() {
     let ad = this.get('ad');
@@ -57,9 +59,20 @@ export default Component.extend({
         this.set('mqList', mqList);
       }
       ad.addService(googletag.pubads());
+      googletag.pubads().addEventListener('slotRenderEnded', (event) => {
+        if (ad === event.slot) {
+          run(() => {
+            if (event.isEmpty && this.get('clearOnEmptyRefresh')) {
+              googletag.pubads().clear([ad]);
+            }
+            this.slotRenderEndedAction(event);
+          });
+        }
+      });
       schedule('afterRender', () => googletag.display(target));
     });
   },
+
 
   willDestroyElement() {
     this._super(...arguments);
