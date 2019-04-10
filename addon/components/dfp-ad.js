@@ -42,9 +42,13 @@ export default Component.extend({
       mapping
     } = this.getProperties('slot', 'sizes', 'target', 'mapping');
 
-    let prefix = config.prefix ? `/${config.prefix}` : '';
-    let networkCode = config.networkCode || DEFAULT_NETWORK_CODE;
-    slot = `${networkCode}${prefix}/${slot}`;
+    if (config.nyprAds) {
+      let prefix = config.nyprAds.prefix ? `/${config.nyprAds.prefix}` : '';
+      let networkCode = config.nyprAds.networkCode || DEFAULT_NETWORK_CODE;
+      slot = `${networkCode}${prefix}/${slot}`;
+    } else {
+      slot = `${DEFAULT_NETWORK_CODE}/${slot}`;
+    }
 
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(slot, sizes, target);

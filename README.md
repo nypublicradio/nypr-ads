@@ -35,12 +35,18 @@ Things you might want to know when using this addon:
 
 ## Configuration
 
-You can configure the following settings in your `environment.js`.
+You can configure the following settings in your app's `environment.js`.
 ```js
-    nypr-ads: {
+module.exports = function(environment) {
+  let ENV = {
+    //...
+    nyprAds: {
      networkCode: "6483581", //optional, defaults to '6483581'
      prefix: "_demo"          //optional, defaults to null
     },
+    //...
+  }
+}
 ```
 
 | Setting     | Default   | Description |

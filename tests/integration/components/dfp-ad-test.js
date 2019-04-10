@@ -12,8 +12,9 @@ module('Integration | Component | dfp ad', function(hooks) {
 
   hooks.beforeEach(function() {
     googletag.pubads = googletag.pubads || (() => {});
-    config.networkCode = DEFAULT_NETWORK_CODE;
-    config.prefix = null;
+    config.nyprAds = config.nyprAds || {};
+    config.nyprAds.networkCode = DEFAULT_NETWORK_CODE;
+    config.nyprAds.prefix = null;
   });
 
   test('it renders', async function(assert) {
@@ -38,7 +39,7 @@ module('Integration | Component | dfp ad', function(hooks) {
   });
 
   test('it lets you override the network code in the config', async function(assert) {
-    config.networkCode = '123';
+    config.nyprAds.networkCode = '123';
     this.stub(googletag.cmd, 'push').callsFake( f => f());
 
     let defineMock = this.mock(googletag)
@@ -54,7 +55,7 @@ module('Integration | Component | dfp ad', function(hooks) {
   });
 
   test('it lets you set a prefix in the config', async function(assert) {
-    config.prefix = 'abc';
+    config.nyprAds.prefix = 'abc';
     this.stub(googletag.cmd, 'push').callsFake( f => f());
 
     let defineMock = this.mock(googletag)

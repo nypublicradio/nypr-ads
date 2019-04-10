@@ -14,7 +14,11 @@ export default Component.extend({
   }),
   init() {
     this._super(...arguments);
-    this.set('network', config.networkCode || DEFAULT_NETWORK_CODE);
-    this.set('prefix', config.prefix ? `/${config.prefix}` : null);
+    if (config.nyprAds) {
+      this.set('network', config.nyprAds.networkCode || DEFAULT_NETWORK_CODE);
+      this.set('prefix', config.nyprAds.prefix ? `/${config.nyprAds.prefix}` : null);
+    } else {
+      this.set('network', DEFAULT_NETWORK_CODE);
+    }
   }
 });
