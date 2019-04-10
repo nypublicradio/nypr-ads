@@ -1,0 +1,1 @@
+export const DEFAULT_NETWORK_CODE = '6483581'
