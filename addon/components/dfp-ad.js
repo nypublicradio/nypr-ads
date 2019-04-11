@@ -4,7 +4,7 @@ import { bind, schedule, run } from '@ember/runloop';
 import googletag from 'googletag';
 import layout from '../templates/components/dfp-ad';
 import config from 'ember-get-config';
-import DEFAULT_NETWORK_CODE from 'nypr-ads/defaults';
+import { DEFAULT_NETWORK_CODE } from 'nypr-ads/defaults';
 
 function wnycEmbeddedAttr() {
   return computed('embeddedAttrs', {
@@ -42,13 +42,9 @@ export default Component.extend({
       mapping
     } = this.getProperties('slot', 'sizes', 'target', 'mapping');
 
-    if (config.nyprAds) {
-      let prefix = config.nyprAds.prefix ? `/${config.nyprAds.prefix}` : '';
-      let networkCode = config.nyprAds.networkCode || DEFAULT_NETWORK_CODE;
-      slot = `${networkCode}${prefix}/${slot}`;
-    } else {
-      slot = `${DEFAULT_NETWORK_CODE}/${slot}`;
-    }
+    let networkCode = get(config, 'nypr-ads.networkCode') || DEFAULT_NETWORK_CODE;
+    let prefix = get(config, 'nypr-ads.prefix') ? `/${get(config, 'nypr-ads.prefix')}` : '';
+    slot = `${networkCode}${prefix}/${slot}`;
 
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(slot, sizes, target);

@@ -5,16 +5,16 @@ import test from 'ember-sinon-qunit/test-support/test';
 import hbs from 'htmlbars-inline-precompile';
 import googletag from 'googletag';
 import config from 'ember-get-config';
-import DEFAULT_NETWORK_CODE from 'nypr-ads/defaults';
+import { DEFAULT_NETWORK_CODE } from 'nypr-ads/defaults';
 
 module('Integration | Component | dfp ad', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
     googletag.pubads = googletag.pubads || (() => {});
-    config.nyprAds = config.nyprAds || {};
-    config.nyprAds.networkCode = DEFAULT_NETWORK_CODE;
-    config.nyprAds.prefix = null;
+    config['nypr-ads'] = config['nypr-ads'] || {};
+    config['nypr-ads'].networkCode = DEFAULT_NETWORK_CODE || 'default network code not found';
+    config['nypr-ads'].prefix = null;
   });
 
   test('it renders', async function(assert) {
@@ -34,12 +34,14 @@ module('Integration | Component | dfp ad', function(hooks) {
 
     await render(hbs`{{dfp-ad target='foo target' sizes=(array 100 200 300) slot='foo slot'}}`);
 
-    assert.ok(displayMock.firstCall.calledWith('foo target'));
-    assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/foo slot`, [100, 200, 300], 'foo target'));
+    assert.ok(displayMock.firstCall.calledWith('foo target'),
+      'it should call display with the correct target');
+    assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/foo slot`, [100, 200, 300], 'foo target'),
+      'it should call define with the correct slot, size, and target');
   });
 
   test('it lets you override the network code in the config', async function(assert) {
-    config.nyprAds.networkCode = '123';
+    config['nypr-ads'].networkCode = '123';
     this.stub(googletag.cmd, 'push').callsFake( f => f());
 
     let defineMock = this.mock(googletag)
@@ -50,12 +52,14 @@ module('Integration | Component | dfp ad', function(hooks) {
 
     await render(hbs`{{dfp-ad target='foo target' sizes=(array 100 200 300) slot='foo slot'}}`);
 
-    assert.ok(displayMock.firstCall.calledWith('foo target'));
-    assert.ok(defineMock.firstCall.calledWith('123/foo slot', [100, 200, 300], 'foo target'));
+    assert.ok(displayMock.firstCall.calledWith('foo target'),
+      'it should call display with the correct target');
+    assert.ok(defineMock.firstCall.calledWith('123/foo slot', [100, 200, 300], 'foo target'),
+      'it should call define with the correct slot, size, and target');
   });
 
   test('it lets you set a prefix in the config', async function(assert) {
-    config.nyprAds.prefix = 'abc';
+    config['nypr-ads'].prefix = 'abc';
     this.stub(googletag.cmd, 'push').callsFake( f => f());
 
     let defineMock = this.mock(googletag)
@@ -66,8 +70,10 @@ module('Integration | Component | dfp ad', function(hooks) {
 
     await render(hbs`{{dfp-ad target='foo target' sizes=(array 100 200 300) slot='foo slot'}}`);
 
-    assert.ok(displayMock.firstCall.calledWith('foo target'));
-    assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/abc/foo slot`, [100, 200, 300], 'foo target'));
+    assert.ok(displayMock.firstCall.calledWith('foo target'),
+      'it should call display with the correct target');
+    assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/abc/foo slot`, [100, 200, 300], 'foo target'),
+      'it should call define with the correct slot, size, and target');
   });
 
   test('it initializes an ad with a size mapping', async function() /*assert*/{

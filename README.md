@@ -40,7 +40,7 @@ You can configure the following settings in your app's `environment.js`.
 module.exports = function(environment) {
   let ENV = {
     //...
-    nyprAds: {
+    'nypr-ads': {
      networkCode: "6483581", //optional, defaults to '6483581'
      prefix: "_demo"          //optional, defaults to null
     },
