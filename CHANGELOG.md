@@ -1,5 +1,11 @@
 # nypr-ads Changelog
 
+## ?.?.?
+  [ENHANCEMENT] Add default network code
+  [ENHANCEMENT] Add configurable network code
+  [ENHANCEMENT] Add configurable network prefix
+
+
 ## 0.2.0
 
 - [ENHANCEMENT] Add `clearOnEmptyRefresh` property

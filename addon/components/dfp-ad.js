@@ -3,6 +3,8 @@ import { computed, get } from '@ember/object';
 import { bind, schedule, run } from '@ember/runloop';
 import googletag from 'googletag';
 import layout from '../templates/components/dfp-ad';
+import config from 'ember-get-config';
+import { DEFAULT_NETWORK_CODE } from 'nypr-ads/defaults';
 
 function wnycEmbeddedAttr() {
   return computed('embeddedAttrs', {
@@ -39,6 +41,11 @@ export default Component.extend({
       target,
       mapping
     } = this.getProperties('slot', 'sizes', 'target', 'mapping');
+
+    let networkCode = get(config, 'nypr-ads.networkCode') || DEFAULT_NETWORK_CODE;
+    let prefix = get(config, 'nypr-ads.prefix') ? `/${get(config, 'nypr-ads.prefix')}` : '';
+    slot = `${networkCode}${prefix}/${slot}`;
+
     googletag.cmd.push(() => {
       let ad = googletag.defineSlot(slot, sizes, target);
       if (!ad) {
