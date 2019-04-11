@@ -37,7 +37,7 @@ module('Integration | Component | dfp ad', function(hooks) {
     assert.ok(displayMock.firstCall.calledWith('foo target'),
       'it should call display with the correct target');
     assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/foo slot`, [100, 200, 300], 'foo target'),
-      'it should call define with the correct slot, size, and target');
+      'it should call define with the correct slot, sizes, and target');
   });
 
   test('it lets you override the network code in the config', async function(assert) {
@@ -55,7 +55,7 @@ module('Integration | Component | dfp ad', function(hooks) {
     assert.ok(displayMock.firstCall.calledWith('foo target'),
       'it should call display with the correct target');
     assert.ok(defineMock.firstCall.calledWith('123/foo slot', [100, 200, 300], 'foo target'),
-      'it should call define with the correct slot, size, and target');
+      'it should call define with the correct slot, sizes, and target');
   });
 
   test('it lets you set a prefix in the config', async function(assert) {
@@ -73,7 +73,7 @@ module('Integration | Component | dfp ad', function(hooks) {
     assert.ok(displayMock.firstCall.calledWith('foo target'),
       'it should call display with the correct target');
     assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/abc/foo slot`, [100, 200, 300], 'foo target'),
-      'it should call define with the correct slot, size, and target');
+      'it should call define with the correct slot, sizes, and target');
   });
 
   test('it initializes an ad with a size mapping', async function() /*assert*/{

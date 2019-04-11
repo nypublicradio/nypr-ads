@@ -14,7 +14,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    let networkCode =  get(config, 'nypr-ads.networkCode')
+    let networkCode =  get(config, 'nypr-ads.networkCode');
     this.set('network', networkCode || DEFAULT_NETWORK_CODE);
 
     let prefix = get(config, 'nypr-ads.prefix');
