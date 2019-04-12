@@ -36,7 +36,8 @@ module('Integration | Component | dfp ad', function(hooks) {
 
     assert.ok(displayMock.firstCall.calledWith('foo target'),
       'it should call display with the correct target');
-    assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/foo slot`, [100, 200, 300], 'foo target'),
+    assert.deepEqual(defineMock.getCall(0).args,
+      [`${DEFAULT_NETWORK_CODE}/foo slot`, [100, 200, 300], 'foo target'],
       'it should call define with the correct slot, sizes, and target');
   });
 
@@ -52,9 +53,11 @@ module('Integration | Component | dfp ad', function(hooks) {
 
     await render(hbs`{{dfp-ad target='foo target' sizes=(array 100 200 300) slot='foo slot'}}`);
 
-    assert.ok(displayMock.firstCall.calledWith('foo target'),
+    assert.ok(displayMock.getCall(0).args,
+      ['foo target'],
       'it should call display with the correct target');
-    assert.ok(defineMock.firstCall.calledWith('123/foo slot', [100, 200, 300], 'foo target'),
+    assert.ok(defineMock.getCall(0).args,
+      ['123/foo slot', [100, 200, 300], 'foo target'],
       'it should call define with the correct slot, sizes, and target');
   });
 
@@ -70,9 +73,11 @@ module('Integration | Component | dfp ad', function(hooks) {
 
     await render(hbs`{{dfp-ad target='foo target' sizes=(array 100 200 300) slot='foo slot'}}`);
 
-    assert.ok(displayMock.firstCall.calledWith('foo target'),
+    assert.ok(displayMock.getCall(0).args,
+      ['foo target'],
       'it should call display with the correct target');
-    assert.ok(defineMock.firstCall.calledWith(`${DEFAULT_NETWORK_CODE}/abc/foo slot`, [100, 200, 300], 'foo target'),
+    assert.ok(defineMock.getCall(0).args,
+      [`${DEFAULT_NETWORK_CODE}/abc/foo slot`, [100, 200, 300], 'foo target'],
       'it should call define with the correct slot, sizes, and target');
   });
 
