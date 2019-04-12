@@ -2,19 +2,24 @@
 
 You can use the methods provided by this addon to set up page level [Google Ad Manager key-value targeting](https://support.google.com/admanager/answer/188092?hl=en) in your application.
 
-## Path Keys
+## Targeting with the Route
+
+You can set and clear your ad targeting values in your routes in the `didTransition` and `willTransition` actions using the provided functions.
+
+### Path Keys
 
 To configure our path targeting values that get set on all routes use `doPathTargeting` and `clearPathTargeting` in your `routes/application.js`.
 
 ```js
 import { doTargetingForPath, clearTargetingForPath } from 'nypr-ads';
 
-didTransition() {
-  doTargetingForPath();
-}
-
-willTransition() {
-  clearTargetingForPath();
+actions: {
+  didTransition() {
+    doTargetingForPath();
+  },
+  willTransition() {
+    clearTargetingForPath();
+  }
 }
 ```
 
@@ -25,20 +30,21 @@ host: 'nypublicradio.github.io'
 urlSegments: ['docs', 'key-value-targeting']
 ```
 
-## Model keys
+### Model keys
 
 In your other routes
 
 ```js
 import { doTargetingForModels, clearTargetingForModels } from 'nypr-ads';
 
-didTransition() {
-  let { section, story } = this.currentModel;
-  doTargetingForModels(section, story);
-}
-
-willTransition() {
-  clearTargetingForModels(section, story);
+actions: {
+  didTransition() {
+    let { section, story } = this.currentModel;
+    doTargetingForModels(section, story);
+  },
+  willTransition() {
+    clearTargetingForModels(section, story);
+  }
 }
 ```
 
@@ -54,7 +60,7 @@ export default DS.Model.extend({
   tags: DS.attr(),
   category: DS.attr(),
   sponsor: DS.attr(),
-  adTargetingMap: computed(function() {
+  adTargeting: computed(function() {
     return {
       'Tag': 'tags',
       'Section': 'category'
@@ -63,20 +69,38 @@ export default DS.Model.extend({
 });
 ```
 
-## Other key-values
+### Other key-values
 
 You can also manually set key-value pairs with `doTargeting` and `clearTargeting`.
 
 
-```
+```js
 import { doTargeting, clearTargeting } from 'nypr-ads';
 
-didTransition() {
-  let { section, story } = this.currentModel;
-  doTargeting({'key1': 'value1', 'key2': 'value2'});
-}
-
-willTransition() {
-  clearTargeting('key1', 'key2');
+actions: {
+  didTransition() {
+    let { section, story } = this.currentModel;
+    doTargeting({'key1': 'value1', 'key2': 'value2'});
+  },
+  willTransition() {
+    clearTargeting('key1', 'key2');
+  }
 }
 ```
+
+## Targeting with the Template
+
+You can also use an invisible component to set targeting in the template:
+
+
+```hbs
+{{do-targeting key='foo' value='bar'}}
+```
+
+Passing multiple targets:
+
+```hbs
+{{do-targeting targets=(hash
+  foo='bar'
+  baz='bla'
+)}}

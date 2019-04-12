@@ -15,6 +15,7 @@ Router.map(function() {
   this.route('not-found', { path: '/*path' });
   this.route('targeting-route');
   this.route('non-targeting-route');
+  this.route('component-targeting-route');
 });
 
 export default Router;
