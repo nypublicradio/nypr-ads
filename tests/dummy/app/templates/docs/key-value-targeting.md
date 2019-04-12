@@ -90,17 +90,18 @@ actions: {
 
 ## Targeting with the Template
 
-You can also use an invisible component to set targeting in the template:
+You can also use an invisible component to set targeting in the template. Targeting keys set via components will be cleared when the component is destroyed.
 
 
 ```hbs
 {{do-targeting key='foo' value='bar'}}
 ```
 
-Passing multiple targets:
+Passing multiple targets with the hash helper:
 
 ```hbs
 {{do-targeting targets=(hash
   foo='bar'
   baz='bla'
 )}}
+```
