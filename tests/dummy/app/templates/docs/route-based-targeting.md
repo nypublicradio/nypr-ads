@@ -6,7 +6,7 @@ You can use the functions provided by this addon to set up [page-level GPT key-v
 
 We usually want to add key-values based on the url to allow for targeting ads by path.
 
-To set up path targeting values that will be set on all routes in your application, add `doPathTargeting` and `clearPathTargeting` to the `didTransition` and `willTransition` actions on your `routes/application.js`.
+To set up targeting for your path that will be applied on all routes in your application, add `doPathTargeting` and `clearPathTargeting` to the `didTransition` and `willTransition` actions on your `routes/application.js`.
 
 {{#docs-snippet name='path-targeting.hbs' title='app/routes/application.js'}}
 import Route from '@ember/routing/route';
@@ -25,7 +25,7 @@ export default Route.extend({
 });
 {{/docs-snippet}}
 
-This will set key-value targeting for the url, host, and url segments. Your resulting key-value pairs will look something like this:
+This will set targeting for the url, host, and url segments. Your resulting key-value pairs will look something like this:
 
 |Key          |Value |
 |-------------|---|
@@ -35,11 +35,11 @@ This will set key-value targeting for the url, host, and url segments. Your resu
 
 ## Setting targeting for models
 
-Setting custom targeting for models. Since each model is different, this addon makes it the responsibility of the model to know which properties are important to ad targeting.
+Since each model is different, this addon makes it the responsibility of the model to know which properties are important to ad targeting.
 
 Your model is expected to have an `adTargeting` property that provides a mapping of targeting keys to model properties. 
 
-For example if you had a model with tags and category properties, and you wanted to use those values with ad targeting keys of 'Tag' and 'Section' respectively, your model would look like this:
+For example if you had a model with `tags` and `category` properties, and you wanted to use those values with ad targeting keys of `Tag` and `Section` respectively, your model would look like this:
 
 ```js
 import DS from 'ember-data';
@@ -58,7 +58,7 @@ export default DS.Model.extend({
 });
 ```
 
-This will target the value of the 'tags' property to the 'Tag' key and the value of the 'category' property to the 'Section' key.
+This will target the value of the `tags` property to the `Tag` key and the value of the `category` property to the `Section` key.
 
 Once your models are set up, you can pass them to the `doTargetingForModels` and `clearTargetingForModels` functions.
 

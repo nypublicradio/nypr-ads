@@ -1,10 +1,10 @@
 # Template-based Targeting
 
-You can set up key-value targeting in your template using the `DoTargeting` component. This is an invisible component that sets up [page-level GPT key-value targeting](https://support.google.com/admanager/answer/1697712#use_key-value_targeting_with_GPT) when created, and clears them when destroyed.
+You can set up key-value targeting in your template using the `DoTargeting` component. This is an invisible component that sets up [page-level GPT key-value targeting](https://support.google.com/admanager/answer/1697712#use_key-value_targeting_with_GPT) when created, and clears the targeting when destroyed.
 
-<aside><p>You generally should avoid combine this with the route-base method above for setting key-values for your models.</p><p>You might, however, use the route-based method for setting the path key-values and the component based method for model key-values.</p></aside>
+<aside><p>You generally should avoid combining this with the route-based method above for setting key-values for your models.</p><p>You can, however, use the route-based method for setting the path's key-values and the component based method for setting model's key-values.</p></aside>
 
-Place the component in your template and set the `key` and `value` properties.
+Place the component in your template and set the `@key` and `@value` properties.
 
 {{#syntax-toggle as |syntax|}}
   {{#syntax.angle}}
@@ -19,7 +19,7 @@ Place the component in your template and set the `key` and `value` properties.
   {{/syntax.classic}}
 {{/syntax-toggle}}
 
-You can also use the `targets` propert and passing multiple targets with the hash helper.
+You can also use the `@targets` property to pass multiple targets with the `hash` helper.
 
 {{#syntax-toggle as |syntax|}}
   {{#syntax.angle}}
