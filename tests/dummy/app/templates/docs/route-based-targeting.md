@@ -25,13 +25,13 @@ export default Route.extend({
 });
 {{/docs-snippet}}
 
-This will set targeting for the url, host, and url segments. Your resulting key-value pairs will look something like this:
+This will set targeting for the url, host, and url segments. Your resulting key-value pairs for the example url `http://example.com/foo/bar/baz` would look like this:
 
 |Key          |Value |
 |-------------|---|
-|`url`          | '/docs/key-value-targeting' |
-|`host`         | 'nypublicradio.github.io' |
-|`urlSegments` | ['docs', 'key-value-targeting'] |
+|`url`          | '/foo/bar/baz' |
+|`host`         | 'example.com' |
+|`urlSegments` | ['foo', 'bar', 'baz'] |
 
 ## Setting targeting for models
 
@@ -68,6 +68,35 @@ import { doTargetingForModels, clearTargetingForModels } from 'nypr-ads';
 
 export default Route.extend({
   //...
+  model({section_id}) {
+    return this.store.findRecord('section', section_id);
+  },
+  actions: {
+    didTransition() {
+      doTargetingForModels(this.currentModel);
+    },
+    willTransition() {
+      clearTargetingForModels(this.currentModel);
+    }
+  }
+});
+```
+
+You can also pass in multiple models.
+
+```js
+import Route from '@ember/routing/route';
+import RSVP from 'rsvp';
+import { doTargetingForModels, clearTargetingForModels } from 'nypr-ads';
+
+export default Route.extend({
+  //...
+  model({story_id, section_id}) {
+    return RSVP.hash({
+      section: this.store.findRecord('section', section_id),
+      story: this.store.findAll('story', story_id)
+    });
+  },
   actions: {
     didTransition() {
       let { section, story } = this.currentModel;
