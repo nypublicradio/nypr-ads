@@ -10,7 +10,8 @@ Router.map(function() {
   docsRoute(this, function() {
     this.route('usage');
     this.route('configuration');
-    this.route('key-value-targeting');
+    this.route('route-based-targeting');
+    this.route('template-based-targeting');
   });
   this.route('not-found', { path: '/*path' });
   this.route('targeting-route');
