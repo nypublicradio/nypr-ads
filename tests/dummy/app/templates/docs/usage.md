@@ -21,8 +21,8 @@ Things you might want to know when using this addon:
 * the `slot` name above is `6483581/leaderboard/wqxr_leaderboard_demo`
 
 * The `mapping` parameter above says:
-  * for viewport sizes greater than or equal to 0px wide and less than 757px wide, use ads from the `300 x 50` slot
-  * for viewport sizes greater than or equal to 757px wide and less than 1203, use ads from the `728 x 90` slot
+  * for viewport sizes greater than or equal to 0px wide and less than 758px wide, use ads from the `300 x 50` slot
+  * for viewport sizes greater than or equal to 758px wide and less than 1203px wide, use ads from the `728 x 90` slot
   * for viewport sizes greater than or equal 1203px wide use `970 x 415`
 
 * The `sizes` above say:
