@@ -63,7 +63,7 @@ export default Component.extend({
   /**
     A mapping of breakpoints to ad sizes for responsive ad display.
 
-    `[[breakpoint1,[width1,height1]],[breakpoint2,[width2,height2]]]`
+    `[[min-size-breakpoint1,[width1,height1]],[min-size-breakpoint2,[width2,height2]]]`
 
     @argument mapping
     @type {Array}

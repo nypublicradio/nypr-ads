@@ -8,6 +8,8 @@ We usually want to add key-values based on the url to allow for targeting ads by
 
 To set up targeting for your path that will be applied on all routes in your application, add `doPathTargeting` and `clearPathTargeting` to the `didTransition` and `willTransition` actions on your `routes/application.js`.
 
+<aside>For this to work correctly, `didTransition` and `willTransition` actions need to bubble from your child routes. Don't forget to `return true` when you implement `didTransition` and `willTransition` in other routes.</aside>
+
 {{#docs-snippet name='path-targeting.hbs' title='app/routes/application.js'}}
 import Route from '@ember/routing/route';
 import { doTargetingForPath, clearTargetingForPath } from 'nypr-ads';
@@ -37,9 +39,21 @@ This will set targeting for the url, host, and url segments. Your resulting key-
 
 Since each model is different, this addon makes it the responsibility of the model to know which properties are important to ad targeting.
 
-Your model is expected to have an `adTargeting` property that provides a mapping of targeting keys to model properties. 
+Your model is expected to have an `adBindings` property that provides an array of keys for properties that will be sent to dfp.
 
-For example if you had a model with `tags` and `category` properties, and you wanted to use those values with ad targeting keys of `Tag` and `Section` respectively, your model would look like this:
+For example, if you had a show model, with a showId property that you also wanted to use as for ad targeting, your `adBindings` would look like this:
+
+```js
+['showId']
+```
+
+If you need to target a model field toward a different GPT key, for example if the above model had an `id` property, you can format your string as the `modelKey:gptKey`:
+
+```js
+['id:showId']
+```
+
+Here's a full model example. In this scenario, we have a model with `tags` and `category` properties, and we want to use those values with ad targeting keys of `tags` and `section` respectively.
 
 ```js
 import DS from 'ember-data';
@@ -48,17 +62,13 @@ import { computed } from '@ember/object';
 export default DS.Model.extend({
   tags: DS.attr(),
   category: DS.attr(),
-  sponsor: DS.attr(),
-  adTargeting: computed(function() {
-    return {
-      'Tag': 'tags',
-      'Section': 'category'
-    }
+  adBindings: computed(function() {
+    return ['tags', 'category:section']
   })
 });
 ```
 
-This will target the value of the `tags` property to the `Tag` key and the value of the `category` property to the `Section` key.
+This will target the value of the `tags` property to the `tags` ad key and the value of the `category` property to the `section` ad key.
 
 Once your models are set up, you can pass them to the `doTargetingForModels` and `clearTargetingForModels` functions.
 
@@ -101,10 +111,12 @@ export default Route.extend({
     didTransition() {
       let { section, story } = this.currentModel;
       doTargetingForModels(section, story);
+      return true;
     },
     willTransition() {
       let { section, story } = this.currentModel;
       clearTargetingForModels(section, story);
+      return true;
     }
   }
 });
@@ -124,9 +136,11 @@ export default Route.extend({
   actions: {
     didTransition() {
       doTargeting({'key1': 'value1', 'key2': 'value2'});
+      return true;
     },
     willTransition() {
       clearTargeting('key1', 'key2');
+      return true;
     }
   }
 });

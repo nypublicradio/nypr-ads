@@ -23,26 +23,29 @@ import { doTargeting, clearTargeting } from 'nypr-ads';
   @class DoTargeting
 */
 export default Component.extend({
-/**
-  The name of a value to assign to @key
+  /**
+    The name of a value to assign to @key
 
-  @argument key
-  @type {String}
-*/
-/**
-  A value to assign to @key.
+    @argument key
+    @type {String}
+  */
+  key: null,
+  /**
+    A value to assign to @key.
 
-  @argument value
-  @type {String|String[]}
-*/
-/**
-  A map of key value pairs
+    @argument value
+    @type {String|String[]}
+  */
+  value: null,
+  /**
+    A map of key value pairs
 
-  `{key1:'value1', key2:'value2'}`
+    `{key1:'value1', key2:'value2'}`
 
-  @argument targets
-  @type {Object}
-*/
+    @argument targets
+    @type {Object}
+  */
+  targets: null,
   tagName: '',
   _clearTargeting() {
     if (this.prevKey) {
@@ -55,19 +58,15 @@ export default Component.extend({
     }
   },
   _updateTargeting() {
-    let key = this.get('key');
-    let value = this.get('value');
-    let targets = this.get('targets');
-
     this._clearTargeting();
 
-    if (key && value != null) {
-      doTargeting({[key]: value});
-      this.prevKey = key;
+    if (this.key && this.value != null) {
+      doTargeting({[this.key]: this.value});
+      this.prevKey = this.key;
     }
-    if(targets) {
-      doTargeting(targets);
-      this.prevTargets = targets;
+    if(this.targets) {
+      doTargeting(this.targets);
+      this.prevTargets = this.targets;
     }
   },
   didInsertElement() {

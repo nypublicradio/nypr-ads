@@ -12,18 +12,13 @@ export default Route.extend({
       section: {
         id: 123,
         slug: 'todays-news',
-        adTargeting: {
-          'section': 'slug'
-        }
+        adBindings: ['slug:section']
       },
       story: {
         id: 456,
         slug: 'good-news-for-once',
         tags: ['good-news', 'cool', 'finally'],
-        adTargeting: {
-          'story': 'slug',
-          'tags': 'tags'
-        }
+        adBindings: ['slug:story', 'tags']
       }
     };
   },

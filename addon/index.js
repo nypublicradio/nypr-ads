@@ -34,7 +34,7 @@ export function clearTargetingForPath() {
 
 /**
   Set targeting for passed in Ember Data Models that
-  have an adTargeting property set up.
+  have an adBindings property set up.
 
   Accepts any number of Ember Data models as parameters.
 
@@ -45,15 +45,18 @@ export function clearTargetingForPath() {
 
   @function doTargetingForModels
   @export named
-  @param {DS.Model} ...models Any number of Ember Data models with 'adTargeting' properties.
+  @param {DS.Model} ...models Any number of Ember Data models with 'adBindings' properties.
 */
 export function doTargetingForModels(...models) {
   models.forEach(model => {
     let targets = {};
-    let adTargeting = get(model, 'adTargeting');
-    if(adTargeting) {
-      Object.keys(adTargeting).forEach(key => {
-        targets[key] = get(model, adTargeting[key]);
+    let adBindings = get(model, 'adBindings');
+    if(adBindings) {
+      adBindings.forEach(binding => {
+        let modelKey = binding.split(':')[0];
+        let targetingKey = binding.split(':')[1] || modelKey;
+
+        targets[targetingKey] = get(model, modelKey);
       });
     }
     doTargeting(targets);
@@ -62,7 +65,7 @@ export function doTargetingForModels(...models) {
 
 /**
   Clear targeting for Ember Data Models that
-  have an adTargeting property set up.
+  have an adBindings property set up.
 
   Accepts any number of Ember Data models as parameters.
 
@@ -73,14 +76,17 @@ export function doTargetingForModels(...models) {
 
   @function clearTargetingForModels
   @export named
-  @param {DS.Model} ...models Any number of Ember Data models with 'adTargeting' properties.
+  @param {DS.Model} ...models Any number of Ember Data models with 'adBindings' properties.
 */
 export function clearTargetingForModels(...models) {
   models.forEach(model => {
-    let adTargetingMap = get(model, 'adTargeting');
-    if(adTargetingMap) {
-      Object.keys(adTargetingMap).forEach(key => {
-        clearTargeting(key);
+    let adBindings = get(model, 'adBindings');
+    if(adBindings) {
+      adBindings.forEach(binding => {
+        let modelKey = binding.split(':')[0];
+        let targetingKey = binding.split(':')[1] || modelKey;
+
+        clearTargeting(targetingKey);
       });
     }
   });
