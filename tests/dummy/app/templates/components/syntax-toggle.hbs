@@ -1,0 +1,17 @@
+{{#ivy-tabs selection=selection as |tabs|}}
+  {{#tabs.tablist as |tablist|}}
+    <ul role="presentation">
+      <li role="presentation">
+        {{#tablist.tab "angle" on-select=(action (mut selection))}}<span role="presentation" aria-label="View Angle Bracket Syntax">&lt;/&gt;</span>{{/tablist.tab}}
+      </li>
+      <li role="presentation">
+        {{#tablist.tab "classic" on-select=(action (mut selection))}}<span role="presentation" aria-label="View Classic Syntax">\{{ }}</span>{{/tablist.tab}}
+      </li>
+    </ul>
+  {{/tabs.tablist}}
+
+  {{yield (hash
+    angle=(component tabs.tabpanel "angle")
+    classic=(component tabs.tabpanel "classic")
+  )}}
+{{/ivy-tabs}}

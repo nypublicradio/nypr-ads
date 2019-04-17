@@ -1,0 +1,21 @@
+{{do-targeting key='section' value=model.section.slug}}
+{{do-targeting key='story'   value=model.story.slug}}
+{{do-targeting key='tags'    value=model.story.tags}}
+
+{{do-targeting targets=(hash
+  foo='true'
+  bar='false'
+)}}
+
+This is a route for acceptance tests that has component-based targeting set.
+<br>
+{{#link-to 'targeting-route'}}Route with Route-based Targeting{{/link-to}}
+<br>
+{{#link-to 'non-targeting-route'}}Route with No Targeting{{/link-to}}
+<br>
+If you're looking at this in a browser you can try the following console commands:
+<pre>
+  googletag.showConsole()
+  googletag.pubads().getTargetingKeys()
+  googletag.pubads().getTargeting(&lt;key&gt;)
+</pre>
