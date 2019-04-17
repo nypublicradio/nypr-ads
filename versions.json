@@ -4,5 +4,17 @@
     "name": "mwalsh/DS-108",
     "sha": "a5be9d8ef9cba0a23caef31555eb772b59795c97",
     "tag": null
+  },
+  "v1.0.0": {
+    "path": "versions/v1.0.0",
+    "name": "v1.0.0",
+    "sha": "9b765856df886eca80166ad2459f0dabc54f9eca",
+    "tag": "v1.0.0"
+  },
+  "-latest": {
+    "path": "",
+    "name": "Latest",
+    "sha": "9b765856df886eca80166ad2459f0dabc54f9eca",
+    "tag": "v1.0.0"
   }
 }
