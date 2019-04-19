@@ -6,9 +6,9 @@ You can use the functions provided by this addon to set up [page-level GPT key-v
 
 We usually want to add key-values based on the url to allow for targeting ads by path.
 
-To set up targeting for your path that will be applied on all routes in your application, add `doPathTargeting` and `clearPathTargeting` to the `didTransition` and `willTransition` actions on your `routes/application.js`.
+To set up targeting for your path that will be applied on all routes in your application, add `doTargetingForPath` and `clearTargetingForPath` to the `didTransition` and `willTransition` actions on your `routes/application.js`.
 
-<aside>For this to work correctly, `didTransition` and `willTransition` actions need to bubble from your child routes. Don't forget to `return true` when you implement `didTransition` and `willTransition` in other routes.</aside>
+<aside>For this to work correctly, <code>didTransition</code> and <code>willTransition</code> actions need to bubble from your child routes. Don't forget to <code>return true</code> when you implement <code>didTransition</code> and <code>willTransition</code> in other routes.</aside>
 
 {{#docs-snippet name='path-targeting.hbs' title='app/routes/application.js'}}
 import Route from '@ember/routing/route';
