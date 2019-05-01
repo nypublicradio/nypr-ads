@@ -23,6 +23,12 @@ module('Integration | Component | dfp ad', function(hooks) {
     assert.equal(findAll('#foo').length, 1);
   });
 
+  test('it sets an id automatically', async function(assert) {
+    await render(hbs`{{dfp-ad slotClassNames='ad'}}`);
+    let div = this.element.querySelector('.ad');
+    assert.ok(/ad_ember\d+/.test(div.id));
+  });
+
   test('it initializes a basic display ad', async function(assert) {
     this.stub(googletag.cmd, 'push').callsFake( f => f());
 

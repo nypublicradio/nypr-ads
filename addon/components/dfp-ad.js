@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 import { bind, schedule, run } from '@ember/runloop';
+import { guidFor } from '@ember/object/internals';
 import googletag from 'googletag';
 import layout from '../templates/components/dfp-ad';
 import config from 'ember-get-config';
@@ -101,6 +102,16 @@ export default Component.extend({
   refresh() {
     let ad = this.get('ad');
     googletag.cmd.push(() => googletag.pubads().refresh([ad]));
+  },
+
+  init() {
+    this._super(...arguments);
+    // if no target is assigned
+    // use a guid (ember###) for the ad slot id
+    if (!this.get('target')) {
+      let target = `ad_${guidFor(this)}`;
+      this.set('target', target);
+    }
   },
 
   didInsertElement() {
