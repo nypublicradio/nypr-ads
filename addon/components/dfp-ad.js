@@ -50,6 +50,7 @@ export default Component.extend({
 
     @argument target
     @type {String}
+    @optional
   */
   target:         wnycEmbeddedAttr(),
   /**
