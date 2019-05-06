@@ -1,18 +1,18 @@
 # nypr-ads Changelog
 
 ## 1.1.0
-  [ENHANCEMENT] Make `target` parameter for dfp-ad component optional and automatic
-  [REMOVED] remove wnycEmbeddedAttr support
-  [REMOVED] remove google-ads service
-  [DOCS] Add detailed upgrade guide to docs
+  - [ENHANCEMENT] Make `target` parameter for dfp-ad component optional and automatic
+  - [REMOVED] remove wnycEmbeddedAttr support
+  - [REMOVED] remove google-ads service
+  - [DOCS] Add detailed upgrade guide to docs
 
 ## 1.0.0
-  [ENHANCEMENT] Add default network code
-  [ENHANCEMENT] Add configurable network code
-  [ENHANCEMENT] Add configurable network prefix
-  [ENHANCEMENT] Add importable targeting functions
-  [ENHANCEMENT] Add do-targeting component
-  [DOCS] Add ember-cli-addon-docs pages
+  - [ENHANCEMENT] Add default network code
+  - [ENHANCEMENT] Add configurable network code
+  - [ENHANCEMENT] Add configurable network prefix
+  - [ENHANCEMENT] Add importable targeting functions
+  - [ENHANCEMENT] Add do-targeting component
+  - [DOCS] Add ember-cli-addon-docs pages
 
 ## 0.2.0
 
