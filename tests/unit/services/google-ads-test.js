@@ -2,38 +2,36 @@ import { module } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import googletag from 'googletag';
+import {
+  doTargeting, clearTargeting,
+  doTargetingForPath, clearTargetingForPath
+} from 'nypr-ads';
 
-module('Unit | Service | google ads', function(hooks) {
+module('Unit | google ads', function(hooks) {
   setupTest(hooks);
 
-  // Replace this with your real tests.
-  test('it exists', function(assert) {
-    let service = this.owner.lookup('service:google-ads');
-    assert.ok(service);
-  });
+  hooks.beforeEach(() => {
+
+  })
 
   test('it calls setTargeting on passed in hash', function(assert) {
     googletag.pubads = googletag.pubads || (() => {});
-    
+
     let testTargets = {tags: ['foo', 'bar'], show: 'baz'};
-    let targetingMock = this.mock().exactly(5);
+    let targetingMock = this.mock().exactly(2);
 
     this.stub(googletag.cmd, 'push').callsFake(f => f());
     this.stub(googletag, 'pubads').callsFake(() => ({
       setTargeting: targetingMock
     }));
-    
-    let service = this.owner.lookup('service:google-ads');
-    service.doTargeting(testTargets);
+
+    doTargeting(testTargets);
     targetingMock.verify();
-    assert.ok(targetingMock.getCall(0).calledWith('url', window.location.pathname));
-    assert.ok(targetingMock.getCall(1).calledWith('host', window.location.host));
-    assert.ok(targetingMock.getCall(2).calledWith('fullurl', window.location.host + window.location.pathname));
-    assert.ok(targetingMock.getCall(3).calledWith('tags', ['foo', 'bar']));
-    assert.ok(targetingMock.getCall(4).calledWith('show', 'baz'));
+    assert.ok(targetingMock.getCall(0).calledWith('tags', ['foo', 'bar']));
+    assert.ok(targetingMock.getCall(1).calledWith('show', 'baz'));
   });
 
-  test('can safely call targeting without an argument', function(assert) {
+  test('it calls doTargetingForPath', function(assert) {
     googletag.pubads = googletag.pubads || (() => {});
     let targetingMock = this.mock().exactly(3);
 
@@ -41,40 +39,37 @@ module('Unit | Service | google ads', function(hooks) {
     this.stub(googletag, 'pubads').callsFake(() => ({
       setTargeting: targetingMock
     }));
-    
-    let service = this.owner.lookup('service:google-ads');
-    service.doTargeting();
+
+    doTargetingForPath({pathname: '/foo/bar/baz', host: 'http://example.com'});
     targetingMock.verify();
-    assert.ok(targetingMock.getCall(0).calledWith('url', window.location.pathname));
-    assert.ok(targetingMock.getCall(1).calledWith('host', window.location.host));
-    assert.ok(targetingMock.getCall(2).calledWith('fullurl', window.location.host + window.location.pathname));
+    assert.ok(targetingMock.calledWith('host', 'http://example.com'));
+    assert.ok(targetingMock.calledWith('url', '/foo/bar/baz'));
+    assert.ok(targetingMock.calledWith('urlSegments', ['foo','bar','baz']));
   });
 
-  test('clear targeting calls the correct googletag api', function(/* assert */) {
+  test('it calls clearTargetingForPath', function(/* assert */) {
     googletag.pubads = googletag.pubads || (() => {});
-    let clearTargetingMock = this.mock().once().withArgs(undefined);
-    
+    let clearTargetingMock = this.mock().exactly(3);
+
     this.stub(googletag.cmd, 'push').callsFake(f => f());
     this.stub(googletag, 'pubads').callsFake(() => ({
       clearTargeting: clearTargetingMock
     }));
-    
-    let service = this.owner.lookup('service:google-ads');
-    service.clearTarget();
+
+    clearTargetingForPath();
     clearTargetingMock.verify();
   });
 
-  test('clear targeting accepts an argument', function(/* assert */) {
+  test('it calls clearTargeting on a key', function(/* assert */) {
     googletag.pubads = googletag.pubads || (() => {});
     let clearTargetingMock = this.mock().once().withArgs('foo');
-    
+
     this.stub(googletag.cmd, 'push').callsFake(f => f());
     this.stub(googletag, 'pubads').callsFake(() => ({
       clearTargeting: clearTargetingMock
     }));
-    
-    let service = this.owner.lookup('service:google-ads');
-    service.clearTarget('foo');
+
+    clearTargeting('foo');
     clearTargetingMock.verify();
   });
 });
