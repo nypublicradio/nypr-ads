@@ -3,6 +3,10 @@ import { get } from '@ember/object';
 import googletag from 'googletag';
 
 
+function notFastboot() {
+  return typeof FastBoot === 'undefined';
+}
+
 /**
   Set targeting for the current 'url', 'host', and 'urlSegments'.
 
@@ -11,7 +15,7 @@ import googletag from 'googletag';
   @param {Object} [location=window.location] The browser location object or a testable replacement.
 */
 export function doTargetingForPath(location=window && window.location) {
-  if (location) {
+  if (notFastboot() && location) {
     doTargeting({
       'host': location.host,
       'url': location.pathname,
@@ -27,9 +31,11 @@ export function doTargetingForPath(location=window && window.location) {
   @export named
 */
 export function clearTargetingForPath() {
-  clearTargeting('host');
-  clearTargeting('url');
-  clearTargeting('urlSegments');
+  if (notFastboot()) {
+    clearTargeting('host');
+    clearTargeting('url');
+    clearTargeting('urlSegments');
+  }
 }
 
 /**
@@ -48,19 +54,21 @@ export function clearTargetingForPath() {
   @param {DS.Model} ...models Any number of Ember Data models with 'adBindings' properties.
 */
 export function doTargetingForModels(...models) {
-  models.forEach(model => {
-    let targets = {};
-    let adBindings = get(model, 'adBindings');
-    if(adBindings) {
-      adBindings.forEach(binding => {
-        let modelKey = binding.split(':')[0];
-        let targetingKey = binding.split(':')[1] || modelKey;
+  if (notFastboot()) {
+    models.forEach(model => {
+      let targets = {};
+      let adBindings = get(model, 'adBindings');
+      if(adBindings) {
+        adBindings.forEach(binding => {
+          let modelKey = binding.split(':')[0];
+          let targetingKey = binding.split(':')[1] || modelKey;
 
-        targets[targetingKey] = get(model, modelKey);
-      });
-    }
-    doTargeting(targets);
-  });
+          targets[targetingKey] = get(model, modelKey);
+        });
+      }
+      doTargeting(targets);
+    });
+  }
 }
 
 /**
@@ -79,17 +87,19 @@ export function doTargetingForModels(...models) {
   @param {DS.Model} ...models Any number of Ember Data models with 'adBindings' properties.
 */
 export function clearTargetingForModels(...models) {
-  models.forEach(model => {
-    let adBindings = get(model, 'adBindings');
-    if(adBindings) {
-      adBindings.forEach(binding => {
-        let modelKey = binding.split(':')[0];
-        let targetingKey = binding.split(':')[1] || modelKey;
+  if (notFastboot()) {
+    models.forEach(model => {
+      let adBindings = get(model, 'adBindings');
+      if(adBindings) {
+        adBindings.forEach(binding => {
+          let modelKey = binding.split(':')[0];
+          let targetingKey = binding.split(':')[1] || modelKey;
 
-        clearTargeting(targetingKey);
-      });
-    }
-  });
+          clearTargeting(targetingKey);
+        });
+      }
+    });
+  }
 }
 
 /**
@@ -105,15 +115,17 @@ export function clearTargetingForModels(...models) {
   @param {Object} targets An object containing key value pairs for targeting.
 */
 export function doTargeting(targets) {
-  googletag.cmd.push(function() {
-    if (targets) {
-      Object.keys(targets).forEach(key => {
-        if (!isEmpty(targets[key])) {
-          googletag.pubads().setTargeting(key, targets[key]);
-        }
-      });
-    }
-  });
+  if (notFastboot()) {
+    googletag.cmd.push(function() {
+      if (targets) {
+        Object.keys(targets).forEach(key => {
+          if (!isEmpty(targets[key])) {
+            googletag.pubads().setTargeting(key, targets[key]);
+          }
+        });
+      }
+    });
+  }
 }
 
 /**
@@ -131,10 +143,12 @@ export function doTargeting(targets) {
   @param {String} ...targets Any number key names to clear.
 */
 export function clearTargeting(...targets) {
-  targets.forEach(target => {
-    googletag.cmd.push(function() {
-      googletag.pubads().clearTargeting(target);
+  if (notFastboot()) {
+    targets.forEach(target => {
+      googletag.cmd.push(function() {
+        googletag.pubads().clearTargeting(target);
+      });
     });
-  });
+  }
 }
 
