@@ -96,45 +96,36 @@ export default Component.extend({
   },
 
   refresh() {
-    let ad = this.get('ad');
-    googletag.cmd.push(() => googletag.pubads().refresh([ad]));
+    googletag.cmd.push(() => googletag.pubads().refresh([this.ad]));
   },
 
   init() {
     this._super(...arguments);
     // if no target is assigned
-    // use a guid (ember###) for the ad slot id
-    if (!this.get('target')) {
-      let target = `ad_${guidFor(this)}`;
-      this.set('target', target);
-    }
+    // use a guid (ad_ + ember###) for the ad slot id
+    const targetId = this.target || `ad_${guidFor(this)}`;
+    this.set('target', targetId);
     this._setStatus(true, 0, 0);
   },
 
   didInsertElement() {
     this._super(...arguments);
-    let {
-      slot,
-      sizes,
-      target,
-      mapping
-    } = this.getProperties('slot', 'sizes', 'target', 'mapping');
 
     let networkCode = get(config, 'nypr-ads.networkCode') || DEFAULT_NETWORK_CODE;
     let prefix = get(config, 'nypr-ads.prefix') ? `/${get(config, 'nypr-ads.prefix')}` : '';
-    slot = `${networkCode}${prefix}/${slot}`;
+    let fullSlot = `${networkCode}${prefix}/${this.slot}`;
 
     googletag.cmd.push(() => {
-      let ad = googletag.defineSlot(slot, sizes, target);
+      let ad = googletag.defineSlot(fullSlot, this.sizes, this.target);
       if (!ad) {
         return;
       }
       this.set('ad', ad);
 
-      if (mapping) {
+      if (this.mapping) {
         let mqList = [];
         let sizeMapping = googletag.sizeMapping();
-        mapping.forEach(([width, unit]) => {
+        this.mapping.forEach(([width, unit]) => {
           sizeMapping.addSize([width, 0], unit);
           let mq = window.matchMedia(`(min-width: ${width}px)`);
           mq.addListener(bind(this, 'refresh'));
@@ -165,17 +156,17 @@ export default Component.extend({
           })
         }
       });
-      schedule('afterRender', () => googletag.display(target));
+      schedule('afterRender', () => googletag.display(this.target));
     });
   },
 
 
   willDestroyElement() {
     this._super(...arguments);
-    let { mqList, ad } = this.getProperties('mqList', 'ad');
-    if (mqList && mqList.length) {
-      mqList.forEach(mq => mq.removeListener(bind(this, 'refresh')));
+
+    if (this.mqList && this.mqList.length) {
+      this.mqList.forEach(mq => mq.removeListener(bind(this, 'refresh')));
     }
-    googletag.cmd.push(() => googletag.destroySlots([ad]));
+    googletag.cmd.push(() => googletag.destroySlots([this.ad]));
   }
 });
