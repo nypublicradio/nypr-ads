@@ -102,6 +102,11 @@ export default Component.extend({
       let target = `ad_${guidFor(this)}`;
       this.set('target', target);
     }
+    this.adState = {
+      isEmpty: true,
+      width: 0,
+      height: 0,
+    }
   },
 
   didInsertElement() {
@@ -136,15 +141,29 @@ export default Component.extend({
         ad.defineSizeMapping(sizeMapping.build());
         this.set('mqList', mqList);
       }
+
+
       ad.addService(googletag.pubads());
+
       googletag.pubads().addEventListener('slotRenderEnded', (event) => {
         if (ad === event.slot) {
           run(() => {
-            if (event.isEmpty && this.get('clearOnEmptyRefresh')) {
-              googletag.pubads().clear([ad]);
+            let adState = {};
+            if (event.isEmpty) {
+              if (this.get('clearOnEmptyRefresh')) {
+                adState.isEmpty = true;
+                googletag.pubads().clear([ad]);
+              } else {
+                adState.isEmpty = this.adState.isEmpty;
+              }
+            } else {
+              adState.isEmpty = true;
+              adState.width = event.size[0];
+              adState.height = event.size[1];
             }
             this.slotRenderEndedAction(event);
-          });
+            this.set('adState', adState);
+          })
         }
       });
       schedule('afterRender', () => googletag.display(target));

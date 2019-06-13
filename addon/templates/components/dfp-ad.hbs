@@ -1,1 +1,13 @@
-<div id={{target}} class={{slotClassNames}}></div>
+{{#if (has-block)}}
+  {{yield (hash
+    tag=(component 'dfp-ad.tag'
+         target=target
+         slotClassNames=slotClassNames
+        )
+    isEmpty=adState.isEmpty
+    width=adState.width
+    height=adState.height
+  )}}
+{{else}}
+  <div id={{target}} class={{slotClassNames}}></div>
+{{/if}}

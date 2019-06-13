@@ -23,6 +23,35 @@ module('Integration | Component | dfp ad', function(hooks) {
     assert.equal(findAll('#foo').length, 1);
   });
 
+  test('it yields an ad tag', async function(assert) {
+    await render(hbs`{{#dfp-ad target="foo" as |ad|}}
+      {{ad.tag}}
+    {{/dfp-ad}}`);
+
+    assert.equal(findAll('#foo').length, 1);
+  });
+
+  test('it yields an ad tag', async function(assert) {
+    await render(hbs`{{#dfp-ad target="foo" as |ad|}}
+      {{ad.tag}}
+    {{/dfp-ad}}`);
+
+    assert.equal(findAll('#foo').length, 1);
+  });
+
+  test('it yields a default width and height', async function(assert) {
+    await render(hbs`{{#dfp-ad target="foo" as |ad|}}
+      <span class="isEmpty">{{ad.isEmpty}}</span>
+      <span class="width">{{ad.width}}</span>
+      <span class="height">{{ad.height}}</span>
+    {{/dfp-ad}}`);
+
+    assert.equal(this.element.querySelector('.isEmpty').textContent, 'true');
+    assert.equal(this.element.querySelector('.width').textContent, '0');
+    assert.equal(this.element.querySelector('.height').textContent, '0');
+  });
+
+
   test('it sets an id automatically', async function(assert) {
     await render(hbs`{{dfp-ad slotClassNames='ad'}}`);
     let div = this.element.querySelector('.ad');
