@@ -43,6 +43,49 @@ module('Integration | Component | dfp ad', function(hooks) {
     assert.equal(this.element.querySelector('.height').textContent, '0');
   });
 
+  test('it updates width and height', async function(assert) {
+    this.stub(googletag.cmd, 'push').callsFake( f => f());
+
+    let mockSlot = {
+      isEmpty: false,
+      size: [320, 50],
+      addService: this.mock().once(),
+    };
+
+    let mockEvent = {
+      isEmpty: false,
+      size: [320, 50],
+      slot: mockSlot,
+    };
+
+    let mockPubadsAPI = {
+      addEventListener(name, fn) {
+        if (name === 'slotRenderEnded') {
+          fn(mockEvent);
+        }
+      }
+    }
+
+    this.mock(googletag)
+      .expects('defineSlot')
+      .once()
+      .returns(mockSlot);
+
+    this.mock(googletag)
+      .expects('pubads')
+      .twice()
+      .returns(mockPubadsAPI);
+
+    await render(hbs`{{#dfp-ad target="foo" as |ad|}}
+      <span class="isEmpty">{{ad.isEmpty}}</span>
+      <span class="width">{{ad.width}}</span>
+      <span class="height">{{ad.height}}</span>
+    {{/dfp-ad}}`);
+
+    assert.equal(this.element.querySelector('.isEmpty').textContent, 'false');
+    assert.equal(this.element.querySelector('.width').textContent, '320');
+    assert.equal(this.element.querySelector('.height').textContent, '50');
+  });
 
   test('it sets an id automatically', async function(assert) {
     await render(hbs`{{dfp-ad slotClassNames='ad'}}`);
