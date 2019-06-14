@@ -89,6 +89,12 @@ export default Component.extend({
   */
   clearOnEmptyRefresh: false,
 
+  _setStatus(isEmpty, width, height) {
+    this.set('isEmpty', isEmpty);
+    this.set('width', width);
+    this.set('height', height);
+  },
+
   refresh() {
     let ad = this.get('ad');
     googletag.cmd.push(() => googletag.pubads().refresh([ad]));
@@ -102,11 +108,7 @@ export default Component.extend({
       let target = `ad_${guidFor(this)}`;
       this.set('target', target);
     }
-    this.adState = {
-      isEmpty: true,
-      width: 0,
-      height: 0,
-    }
+    this._setStatus(true, 0, 0);
   },
 
   didInsertElement() {
@@ -148,21 +150,18 @@ export default Component.extend({
       googletag.pubads().addEventListener('slotRenderEnded', (event) => {
         if (ad === event.slot) {
           run(() => {
-            let adState = {};
-            if (event.isEmpty) {
-              if (this.get('clearOnEmptyRefresh')) {
-                adState.isEmpty = true;
-                googletag.pubads().clear([ad]);
-              } else {
-                adState.isEmpty = this.adState.isEmpty;
-              }
-            } else {
-              adState.isEmpty = true;
-              adState.width = event.size[0];
-              adState.height = event.size[1];
+            if (event.isEmpty && this.clearOnEmptyRefresh) {
+              googletag.pubads().clear([ad]);
+              this._setStatus(true, 0, 0);
+            } else if (!event.isEmpty) {
+              this._setStatus(false, event.size[0], event.size[1]);
             }
+            // If the response isEmpty AND clearOnEmptyRefresh
+            // is false, we don't update status. Not clearing
+            // an existing ad slot in the case of an unfilled
+            // request is actually the default google
+            // publisher ads behavior.
             this.slotRenderEndedAction(event);
-            this.set('adState', adState);
           })
         }
       });
