@@ -4587,7 +4587,7 @@ ember-cli-htmlbars-inline-precompile@^1.0.0, ember-cli-htmlbars-inline-precompil
     heimdalljs-logger "^0.1.9"
     silent-error "^1.1.0"
 
-ember-cli-htmlbars@^2.0.1, ember-cli-htmlbars@^2.0.2, ember-cli-htmlbars@^2.0.3:
+ember-cli-htmlbars@^2.0.1, ember-cli-htmlbars@^2.0.2:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-2.0.5.tgz#b5a105429a6bce4f7c9c97b667e3b8926e31397f"
   integrity sha512-3f3PAxdnQ/fhQa8XP/3z4RLRgLHxV8j4Ln75aHbRdemOCjBa048KxL9l+acRLhCulbGQCMnLiIUIC89PAzLrcA==
@@ -7216,12 +7216,12 @@ isurl@^1.0.0-alpha5:
     is-object "^1.0.1"
 
 ivy-tabs@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/ivy-tabs/-/ivy-tabs-3.3.0.tgz#e29efcba1aaed855e97f5fa4789b1ac7387a32ac"
-  integrity sha512-1LWKvrZy8P/MDPJBWctQQ2RZLpAhizr5fmvSJ6hj7hMctZx8h7+dOtV2XYM9+nWu/4cIOIHih7iqMoB/7+upbw==
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/ivy-tabs/-/ivy-tabs-3.3.1.tgz#138f764469abcc6a0172a6e7bd9acc53c49f7f09"
+  integrity sha512-6JZkZXtedeJh6AuI3IdKoFSZio6rCm8qe+D2lTlz2d4bqHinWM0T3raglnn1mpHeDMW0P41lha6iFiE+0AK/1g==
   dependencies:
-    ember-cli-babel "^6.10.0"
-    ember-cli-htmlbars "^2.0.3"
+    ember-cli-babel "^7.1.2"
+    ember-cli-htmlbars "^3.0.0"
 
 joi@^12.0.0:
   version "12.0.0"
