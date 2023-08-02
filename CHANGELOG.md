@@ -1,5 +1,7 @@
 # nypr-ads Changelog
 
+## 1.1.2
+- [FIX] #42 Update google publisher tag script url
 ## 1.1.1
 - [ENHANCEMENT] #8 Add more robust fastboot checking to targeting functions
 - [ENHANCEMENT] #8 refactor dfp-ad to not use this.get
