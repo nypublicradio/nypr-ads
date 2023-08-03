@@ -15,7 +15,7 @@ module.exports = {
   
   contentFor: function(type, config) {
     if (type === 'head' && config.environment !== 'test') {
-      return '<script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>';
+      return '<script async="async" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>';
     } else {
       return '';
     }
