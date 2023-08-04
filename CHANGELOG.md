@@ -1,5 +1,9 @@
 # nypr-ads Changelog
 
+## 0.2.1
+
+- [FIX] Update Google Publisher Tag urls
+
 ## 0.2.0
 
 - [ENHANCEMENT] Add `clearOnEmptyRefresh` property
